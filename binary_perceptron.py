@@ -8,10 +8,7 @@ class Perceptron(object):
         self.learning_step = 0.00001
         self.max_iteration = 5000
         self.w = None
-
-    def predict_(self,x):
-        wx = sum([self.w[j] * x[j] for j in range(len(self.w))])
-        return int(wx > 0)
+        
     def train(self,features,labels):
         #self.w = np.random.randn((len(features[0]) + 1))
         self.w = [0.0] * (len(features[0]) + 1)
@@ -20,8 +17,9 @@ class Perceptron(object):
         time = 0
 
         while time < self.max_iteration:
-            index =random.randint(0, len(labels))
+            index =random.randint(0, len(labels)- 1 )
             x = list(features[index])
+            #形成 w_hat
             x.append(1.0) # b variable
             y = 2 * labels[index] - 1 # +1 and -1
             #逐个元素处理
@@ -32,7 +30,9 @@ class Perceptron(object):
                 if correct_count > self.max_iteration:
                     break
                 continue
+                #update the arguments
             for i in range(len(self.w)):
+                #include b
                 self.w[i] += self.learning_step * (y * x[i])
 
     def predict(self,features):
@@ -40,7 +40,8 @@ class Perceptron(object):
         for feature in features:
             x = list(feature)
             x.append(1)
-            labels.append(self.predict_(x))
+            #列表解析扩展
+            labels.append(int(sum([self.w[j] * x[j] for j in range(len(self.w))]) > 0))
         return labels
 print('Start read data')
 
