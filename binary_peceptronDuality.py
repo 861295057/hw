@@ -17,6 +17,7 @@ class PerceptronDuality():
         self.bias = 0
         print("argument initialize.")
         gram = np.dot(features, features.T)
+        #计算gram矩阵
         print("gram caculate finished")
         correct_count = 0
         time = 0
