@@ -15,9 +15,10 @@ class PerceptronDuality():
         num_samples,_ = features.shape
         self.alpha = np.zeros(num_samples)
         self.bias = 0
+        # 改正 y 的label
+        labels = 2 * np.array(labels) - 1
         print("argument initialize.")
         gram = np.dot(features, features.T)
-        #计算gram矩阵
         print("gram caculate finished")
         correct_count = 0
         time = 0
@@ -25,7 +26,7 @@ class PerceptronDuality():
             index = random.randint(0, len(labels) - 1  )
             #print(index)
             inner_product = gram[index]
-            y =2 * labels[index] - 1
+            y =labels[index] 
             wx = y * ( np.sum(self.alpha * labels * inner_product) + self.bias)
             #print(np.sum(self.alpha * labels * inner_product) + self.bias)
             # * means product
@@ -34,6 +35,7 @@ class PerceptronDuality():
                 if correct_count > self.max_iteration:
                     break
                 continue
+            #updata the argument
             self.alpha[index] = self.alpha[index] + self.learning_rate
             
             self.bias = self.bias + self.learning_rate * y
